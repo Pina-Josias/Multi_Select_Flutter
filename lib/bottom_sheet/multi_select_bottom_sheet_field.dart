@@ -467,7 +467,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
             ? Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 4),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       widget.state!.errorText!,
                       style: TextStyle(
