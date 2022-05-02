@@ -181,7 +181,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
         backgroundColor: widget.unselectedColor,
         selectedColor: widget.colorator?.call(item.value) ??
             widget.selectedColor ??
-            Theme.of(context).primaryColor.withOpacity(0.35),
+            Theme.of(context).colorScheme.primary.withOpacity(0.35),
         label: Text(
           item.label,
           style: item.selected
@@ -189,7 +189,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                   color: widget.selectedItemsTextStyle?.color ??
                       widget.colorator?.call(item.value) ??
                       widget.selectedColor?.withOpacity(1) ??
-                      Theme.of(context).primaryColor,
+                      Theme.of(context).colorScheme.primary,
                   fontSize: widget.selectedItemsTextStyle?.fontSize,
                 )
               : widget.itemsTextStyle,
@@ -234,7 +234,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: widget.selectedColor ??
-                                      Theme.of(context).primaryColor,
+                                      Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                             ),
@@ -304,7 +304,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                   color: (widget.selectedColor != null &&
                           widget.selectedColor != Colors.transparent)
                       ? widget.selectedColor!.withOpacity(1)
-                      : Theme.of(context).primaryColor,
+                      : Theme.of(context).colorScheme.primary,
                 ),
               ),
           onPressed: () {
@@ -319,7 +319,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
                   color: (widget.selectedColor != null &&
                           widget.selectedColor != Colors.transparent)
                       ? widget.selectedColor!.withOpacity(1)
-                      : Theme.of(context).primaryColor,
+                      : Theme.of(context).colorScheme.primary,
                 ),
               ),
           onPressed: () {

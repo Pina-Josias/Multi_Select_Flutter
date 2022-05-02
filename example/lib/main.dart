@@ -132,9 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
               //################################################################################################
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(.4),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(.4),
                   border: Border.all(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     width: 2,
                   ),
                 ),

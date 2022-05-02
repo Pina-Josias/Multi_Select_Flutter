@@ -218,7 +218,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                 ? widget.colorator!(item.value)
                 : widget.selectedColor != null
                     ? widget.selectedColor
-                    : Theme.of(context).primaryColor.withOpacity(0.35),
+                    : Theme.of(context).colorScheme.primary.withOpacity(0.35),
         label: Text(
           item.label,
           style: _selectedValues.contains(item.value)
@@ -226,7 +226,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                   color: widget.selectedItemsTextStyle?.color ??
                       widget.colorator?.call(item.value) ??
                       widget.selectedColor?.withOpacity(1) ??
-                      Theme.of(context).primaryColor,
+                      Theme.of(context).colorScheme.primary,
                   fontSize: widget.selectedItemsTextStyle != null
                       ? widget.selectedItemsTextStyle!.fontSize
                       : null,
@@ -283,8 +283,9 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                                   hintText: widget.searchHint ?? "Search",
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: widget.selectedColor ??
-                                            Theme.of(context).primaryColor),
+                                      color: widget.selectedColor ??
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
                                   ),
                                 ),
                                 onChanged: (val) {
@@ -373,7 +374,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                                           widget.selectedColor !=
                                               Colors.transparent)
                                       ? widget.selectedColor!.withOpacity(1)
-                                      : Theme.of(context).primaryColor,
+                                      : Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                         ),
@@ -393,7 +394,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                                           widget.selectedColor !=
                                               Colors.transparent)
                                       ? widget.selectedColor!.withOpacity(1)
-                                      : Theme.of(context).primaryColor,
+                                      : Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                         ),

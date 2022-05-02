@@ -470,7 +470,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
                                         widget.selectedColor !=
                                             Colors.transparent)
                                     ? widget.selectedColor!
-                                    : Theme.of(context).primaryColor
+                                    : Theme.of(context).colorScheme.primary
                                 : Colors.black45,
                         width: _selectedItems.isNotEmpty
                             ? (widget.state != null && widget.state!.hasError)

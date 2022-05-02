@@ -284,15 +284,15 @@ class __MultiSelectChipFieldViewState<V>
         Container(
           decoration: widget.decoration ??
               BoxDecoration(
-                border:
-                    Border.all(width: 1, color: Theme.of(context).primaryColor),
+                border: Border.all(
+                    width: 1, color: Theme.of(context).colorScheme.primary),
               ),
           child: Column(
             children: [
               widget.showHeader
                   ? Container(
-                      color:
-                          widget.headerColor ?? Theme.of(context).primaryColor,
+                      color: widget.headerColor ??
+                          Theme.of(context).colorScheme.primary,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -308,7 +308,9 @@ class __MultiSelectChipFieldViewState<V>
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: widget.selectedChipColor ??
-                                                Theme.of(context).primaryColor,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                           ),
                                         ),
                                       ),
@@ -461,7 +463,7 @@ class __MultiSelectChipFieldViewState<V>
                           _selectedValues.contains(item.value)
                       ? widget.colorator!(item.value)!
                       : widget.selectedChipColor ??
-                          Theme.of(context).primaryColor),
+                          Theme.of(context).colorScheme.primary),
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(15.0),
                 bottom: Radius.circular(15.0),
@@ -476,7 +478,7 @@ class __MultiSelectChipFieldViewState<V>
                         ? widget.colorator!(item.value)!.withOpacity(1)
                         : widget.icon!.color ??
                             widget.selectedChipColor ??
-                            Theme.of(context).primaryColor,
+                            Theme.of(context).colorScheme.primary,
                   )
                 : null
             : null,
@@ -510,7 +512,7 @@ class __MultiSelectChipFieldViewState<V>
                 ? widget.colorator!(item.value)
                 : widget.selectedChipColor != null
                     ? widget.selectedChipColor
-                    : Theme.of(context).primaryColor.withOpacity(0.33),
+                    : Theme.of(context).colorScheme.primary.withOpacity(0.33),
         onSelected: (_) {
           if (_) {
             _selectedValues.add(item.value);
