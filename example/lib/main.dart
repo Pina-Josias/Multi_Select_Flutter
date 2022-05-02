@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       .map((animal) => MultiSelectItem<Animal>(animal, animal.name))
       .toList();
   //List<Animal> _selectedAnimals = [];
-  List<Animal> _selectedAnimals2 = [];
+  List<Animal> _selectedAnimals2;
   List<Animal> _selectedAnimals3 = [];
   //List<Animal> _selectedAnimals4 = [];
   List<Animal> _selectedAnimals5 = [];
@@ -178,10 +178,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: _multiSelectKey,
                 initialChildSize: 0.7,
                 maxChildSize: 0.95,
+                autovalidateMode: AutovalidateMode.always,
                 title: Text("Animals"),
-                buttonText: Text("Favorite Animals"),
+                buttonText: Text("Multiples items"),
+                showBottomSelection: false,
+                buttonIcon: Icon(Icons.arrow_drop_down),
                 items: _items,
+                initialValue: _selectedAnimals3,
                 searchable: true,
+                showButtonsModal: true,
                 validator: (values) {
                   if (values == null || values.isEmpty) {
                     return "Required";
@@ -192,20 +197,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   return null;
                 },
-                onConfirm: (values) {
+                onConfirm: (values) {},
+                onSelectionChanged: (values) {
                   setState(() {
                     _selectedAnimals3 = values;
                   });
                   _multiSelectKey.currentState.validate();
                 },
-                chipDisplay: MultiSelectChipDisplay(
-                  onTap: (item) {
-                    setState(() {
-                      _selectedAnimals3.remove(item);
-                    });
-                    _multiSelectKey.currentState.validate();
-                  },
-                ),
               ),
               SizedBox(height: 40),
               //################################################################################################

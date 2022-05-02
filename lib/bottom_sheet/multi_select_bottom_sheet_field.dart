@@ -103,6 +103,12 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
   /// Set the color of the check in the checkbox
   final Color? checkColor;
 
+  /// Show the selected items in the bottom sheet below the field.
+  final bool? showBottomSelection;
+
+  /// Set the buttons display on the bottom sheet.
+  final bool showButtonsModal;
+
   final AutovalidateMode autovalidateMode;
   final FormFieldValidator<List<V>>? validator;
   final FormFieldSetter<List<V>>? onSaved;
@@ -144,6 +150,8 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
     this.key,
     this.onSaved,
     this.validator,
+    this.showBottomSelection = true,
+    this.showButtonsModal = false,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : super(
             key: key,
@@ -182,6 +190,8 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
                 searchTextStyle: searchTextStyle,
                 searchable: searchable,
                 selectedColor: selectedColor,
+                showBottomSelection: showBottomSelection,
+                showButtonsModal: showButtonsModal,
                 separateSelectedItems: separateSelectedItems,
                 shape: shape,
                 checkColor: checkColor,
@@ -224,6 +234,8 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final TextStyle? searchHintStyle;
   final bool separateSelectedItems;
   final Color? checkColor;
+  final bool? showBottomSelection;
+  final bool? showButtonsModal;
   FormFieldState<List<V>>? state;
 
   _MultiSelectBottomSheetFieldView({
@@ -256,6 +268,8 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
     this.searchTextStyle,
     this.searchHintStyle,
     this.selectedItemsTextStyle,
+    this.showBottomSelection = true,
+    this.showButtonsModal = false,
     this.separateSelectedItems = false,
     this.checkColor,
   });
@@ -291,6 +305,8 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
         itemsTextStyle = field.itemsTextStyle,
         searchHintStyle = field.searchHintStyle,
         searchTextStyle = field.searchTextStyle,
+        showBottomSelection = field.showBottomSelection,
+        showButtonsModal = field.showButtonsModal,
         selectedItemsTextStyle = field.selectedItemsTextStyle,
         separateSelectedItems = field.separateSelectedItems,
         checkColor = field.checkColor,
@@ -379,6 +395,8 @@ class __MultiSelectBottomSheetFieldViewState<V>
               borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
             ),
         isScrollControlled: true,
+        isDismissible: true,
+        enableDrag: true,
         context: context,
         builder: (context) {
           return MultiSelectBottomSheet<V>(
@@ -404,9 +422,18 @@ class __MultiSelectBottomSheetFieldViewState<V>
                 widget.state!.didChange(selected);
               }
               _selectedItems = selected;
-              if (widget.onConfirm != null) widget.onConfirm!(selected);
+              if (widget.onConfirm != null)
+                widget.onSelectionChanged!(selected);
             },
-            onSelectionChanged: widget.onSelectionChanged,
+            onSelectionChanged: (selected) {
+              if (widget.state != null) {
+                widget.state!.didChange(selected);
+              }
+              _selectedItems = selected;
+              if (widget.onSelectionChanged != null)
+                widget.onSelectionChanged!(selected);
+            },
+            showButtonsModal: widget.showButtonsModal!,
             searchable: widget.searchable,
             title: widget.title,
             initialChildSize: widget.initialChildSize,
@@ -418,6 +445,11 @@ class __MultiSelectBottomSheetFieldViewState<V>
 
   @override
   Widget build(BuildContext context) {
+    List<MultiSelectItem<V>?> chipDisplayItems = [];
+    chipDisplayItems = _selectedItems
+        .map((e) =>
+            widget.items.firstWhereOrNull((element) => e == element.value))
+        .toList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -432,19 +464,19 @@ class __MultiSelectBottomSheetFieldViewState<V>
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         color: widget.state != null && widget.state!.hasError
-                              ? Colors.red.shade800.withOpacity(0.6)
-                              : _selectedItems.isNotEmpty
-                                  ? (widget.selectedColor != null &&
-                                          widget.selectedColor !=
-                                              Colors.transparent)
-                                      ? widget.selectedColor!
-                                      : Theme.of(context).primaryColor
-                                  : Colors.black45,
+                            ? Colors.red.shade800.withOpacity(0.6)
+                            : _selectedItems.isNotEmpty
+                                ? (widget.selectedColor != null &&
+                                        widget.selectedColor !=
+                                            Colors.transparent)
+                                    ? widget.selectedColor!
+                                    : Theme.of(context).primaryColor
+                                : Colors.black45,
                         width: _selectedItems.isNotEmpty
-                              ? (widget.state != null && widget.state!.hasError)
-                                  ? 1.4
-                                  : 1.8
-                              : 1.2,
+                            ? (widget.state != null && widget.state!.hasError)
+                                ? 1.4
+                                : 1.8
+                            : 1.2,
                         style: BorderStyle.solid,
                       ),
                     )
@@ -453,13 +485,19 @@ class __MultiSelectBottomSheetFieldViewState<V>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                widget.buttonText ?? Text("Select"),
+                chipDisplayItems.isNotEmpty
+                    ? chipDisplayItems.length == 1
+                        ? Text("${chipDisplayItems.first?.label}")
+                        : widget.buttonText ?? Text("Multiple Selection")
+                    : Text("Select"),
                 widget.buttonIcon ?? Icon(Icons.arrow_downward),
               ],
             ),
           ),
         ),
-        _buildInheritedChipDisplay(),
+        widget.showBottomSelection!
+            ? _buildInheritedChipDisplay()
+            : const SizedBox(),
         widget.state != null && widget.state!.hasError
             ? SizedBox(height: 5)
             : Container(),
@@ -467,7 +505,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
             ? Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 15),
                     child: Text(
                       widget.state!.errorText!,
                       style: TextStyle(

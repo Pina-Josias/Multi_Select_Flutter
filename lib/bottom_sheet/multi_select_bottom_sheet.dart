@@ -21,6 +21,8 @@ class MultiSelectBottomSheet<T> extends StatefulWidget
   /// Fires when confirm is tapped.
   final void Function(List<T>)? onConfirm;
 
+  final void Function(List<T>)? onCancel;
+
   /// Toggles search functionality.
   final bool searchable;
 
@@ -76,6 +78,9 @@ class MultiSelectBottomSheet<T> extends StatefulWidget
   /// Moves the selected items to the top of the list.
   final bool separateSelectedItems;
 
+  /// Set the buttons display.
+  final bool showButtonsModal;
+
   /// Set the color of the check in the checkbox
   final Color? checkColor;
 
@@ -85,6 +90,7 @@ class MultiSelectBottomSheet<T> extends StatefulWidget
     this.title,
     this.onSelectionChanged,
     this.onConfirm,
+    this.onCancel,
     this.listType,
     this.cancelText,
     this.confirmText,
@@ -102,6 +108,7 @@ class MultiSelectBottomSheet<T> extends StatefulWidget
     this.searchHint,
     this.searchHintStyle,
     this.selectedItemsTextStyle,
+    this.showButtonsModal = false,
     this.separateSelectedItems = false,
     this.checkColor,
   });
@@ -132,6 +139,31 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
     if (widget.separateSelectedItems) {
       _items = widget.separateSelected(_items);
     }
+  }
+
+  void _selectAllItems() {
+    for (int i = 0; i < _items.length; i++) {
+      _items[i].selected = true;
+      _selectedValues.add(_items[i].value);
+    }
+
+    setState(() {
+      _items;
+      _selectedValues;
+    });
+    widget.onSelectionChanged!(_selectedValues);
+  }
+
+  void _deselectAllItems() {
+    for (int i = 0; i < _items.length; i++) {
+      _items[i].selected = false;
+    }
+    _selectedValues = [];
+    setState(() {
+      _items;
+      _selectedValues;
+    });
+    widget.onSelectionChanged!(_selectedValues);
   }
 
   /// Returns a CheckboxListTile
@@ -229,6 +261,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
         initialChildSize: widget.initialChildSize ?? 0.3,
         minChildSize: widget.minChildSize ?? 0.3,
         maxChildSize: widget.maxChildSize ?? 0.6,
+        snap: true,
         expand: false,
         builder: (BuildContext context, ScrollController scrollController) {
           return Column(
@@ -320,52 +353,54 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                         ),
                       ),
               ),
-              Container(
-                padding: EdgeInsets.all(2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {
-                          widget.onCancelTap(context, widget.initialValue);
-                        },
-                        child: widget.cancelText ??
-                            Text(
-                              "CANCEL",
-                              style: TextStyle(
-                                color: (widget.selectedColor != null &&
-                                        widget.selectedColor !=
-                                            Colors.transparent)
-                                    ? widget.selectedColor!.withOpacity(1)
-                                    : Theme.of(context).primaryColor,
+              if (widget.showButtonsModal)
+                Container(
+                  padding: EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            _deselectAllItems();
+                            //widget.onCancelTap(context, widget.initialValue);
+                          },
+                          child: widget.cancelText ??
+                              Text(
+                                "DESELECT ALL",
+                                style: TextStyle(
+                                  color: (widget.selectedColor != null &&
+                                          widget.selectedColor !=
+                                              Colors.transparent)
+                                      ? widget.selectedColor!.withOpacity(1)
+                                      : Theme.of(context).primaryColor,
+                                ),
                               ),
-                            ),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {
-                          widget.onConfirmTap(
-                              context, _selectedValues, widget.onConfirm);
-                        },
-                        child: widget.confirmText ??
-                            Text(
-                              "OK",
-                              style: TextStyle(
-                                color: (widget.selectedColor != null &&
-                                        widget.selectedColor !=
-                                            Colors.transparent)
-                                    ? widget.selectedColor!.withOpacity(1)
-                                    : Theme.of(context).primaryColor,
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            _selectAllItems();
+                            //widget.onConfirmTap(context, _selectedValues, widget.onConfirm);
+                          },
+                          child: widget.confirmText ??
+                              Text(
+                                "SELECT ALL",
+                                style: TextStyle(
+                                  color: (widget.selectedColor != null &&
+                                          widget.selectedColor !=
+                                              Colors.transparent)
+                                      ? widget.selectedColor!.withOpacity(1)
+                                      : Theme.of(context).primaryColor,
+                                ),
                               ),
-                            ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
             ],
           );
         },
