@@ -73,6 +73,9 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
   /// It will either set the chip color, or the checkbox color depending on the list type.
   final Color Function(V)? colorator;
 
+  /// Placeholder text for the search field.
+  final String? hintText;
+
   /// Set the background color of the bottom sheet.
   final Color? backgroundColor;
 
@@ -136,6 +139,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
     this.shape,
     this.barrierColor,
     this.searchHint,
+    this.hintText,
     this.colorator,
     this.backgroundColor,
     this.unselectedColor,
@@ -180,6 +184,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
                 confirmText: confirmText,
                 initialChildSize: initialChildSize,
                 listType: listType,
+                hintText: hintText,
                 maxChildSize: maxChildSize,
                 minChildSize: minChildSize,
                 onConfirm: onConfirm,
@@ -217,6 +222,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final MultiSelectListType? listType;
   final Color? selectedColor;
   final String? searchHint;
+  final String? hintText;
   final double? initialChildSize;
   final double? minChildSize;
   final double? maxChildSize;
@@ -259,6 +265,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
     this.shape,
     this.barrierColor,
     this.searchHint,
+    this.hintText,
     this.colorator,
     this.backgroundColor,
     this.unselectedColor,
@@ -304,6 +311,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
         closeSearchIcon = field.closeSearchIcon,
         itemsTextStyle = field.itemsTextStyle,
         searchHintStyle = field.searchHintStyle,
+        hintText = field.hintText,
         searchTextStyle = field.searchTextStyle,
         showBottomSelection = field.showBottomSelection,
         showButtonsModal = field.showButtonsModal,
@@ -489,7 +497,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
                     ? chipDisplayItems.length == 1
                         ? Text("${chipDisplayItems.first?.label}")
                         : widget.buttonText ?? Text("Multiple Selection")
-                    : Text("Select"),
+                    : Text("${widget.hintText ?? "Select"}"),
                 widget.buttonIcon ?? Icon(Icons.arrow_downward),
               ],
             ),
