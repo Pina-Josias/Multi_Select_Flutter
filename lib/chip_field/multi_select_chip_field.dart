@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../multi_select_flutter.dart';
 
-class MultiSelectChipField<V> extends FormField<List<V>> {
+class MultiSelectChipField<V> extends FormField<List<V?>> {
   /// Style the Container that makes up the field.
   final BoxDecoration? decoration;
 
@@ -42,7 +42,7 @@ class MultiSelectChipField<V> extends FormField<List<V>> {
   final Color Function(V)? colorator;
 
   /// Fires when a chip is tapped. A good time to store the selected values.
-  final Function(List<V>)? onTap;
+  final Function(List<V?>)? onTap;
 
   /// Enables search functionality.
   final bool? searchable;
@@ -60,7 +60,7 @@ class MultiSelectChipField<V> extends FormField<List<V>> {
   final Color? headerColor;
 
   /// Build a custom widget that gets created dynamically for each item.
-  final Widget Function(MultiSelectItem<V>, FormFieldState<List<V>>)?
+  final Widget Function(MultiSelectItem<V>, FormFieldState<List<V?>>)?
       itemBuilder;
 
   /// Set the height of the selectable area.
@@ -78,10 +78,10 @@ class MultiSelectChipField<V> extends FormField<List<V>> {
   /// Set the width of the chip.
   final double? chipWidth;
 
-  final List<V>? initialValue;
+  final List<V?>? initialValue;
   final AutovalidateMode autovalidateMode;
-  final FormFieldValidator<List<V>>? validator;
-  final FormFieldSetter<List<V>>? onSaved;
+  final FormFieldValidator<List<V?>>? validator;
+  final FormFieldSetter<List<V?>>? onSaved;
   final GlobalKey<FormFieldState>? key;
 
   MultiSelectChipField({
@@ -121,7 +121,7 @@ class MultiSelectChipField<V> extends FormField<List<V>> {
             validator: validator,
             autovalidateMode: autovalidateMode,
             initialValue: initialValue ?? [],
-            builder: (FormFieldState<List<V>> state) {
+            builder: (FormFieldState<List<V?>> state) {
               _MultiSelectChipFieldView view = _MultiSelectChipFieldView<V>(
                 items: items,
                 decoration: decoration,
@@ -175,14 +175,14 @@ class _MultiSelectChipFieldView<V> extends StatefulWidget
   final String? searchHint;
   final TextStyle? searchHintStyle;
   final TextStyle? searchTextStyle;
-  final List<V>? initialValue;
+  final List<V?>? initialValue;
   final Color? Function(V)? colorator;
-  final Function(List<V>)? onTap;
+  final Function(List<V?>)? onTap;
   final Color? headerColor;
-  final Widget Function(MultiSelectItem<V>, FormFieldState<List<V>>)?
+  final Widget Function(MultiSelectItem<V>, FormFieldState<List<V?>>)?
       itemBuilder;
   final double? height;
-  FormFieldState<List<V>>? state;
+  FormFieldState<List<V?>>? state;
   final Function(ScrollController)? scrollControl;
   final HorizontalScrollBar? scrollBar;
   final bool showHeader;
@@ -220,7 +220,7 @@ class _MultiSelectChipFieldView<V> extends StatefulWidget
 
   /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectChipField.
   _MultiSelectChipFieldView.withState(
-      _MultiSelectChipFieldView<V> field, FormFieldState<List<V>> state)
+      _MultiSelectChipFieldView<V> field, FormFieldState<List<V?>> state)
       : items = field.items,
         title = field.title,
         decoration = field.decoration,

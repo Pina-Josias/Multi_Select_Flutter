@@ -7,7 +7,7 @@ import 'mult_select_dialog.dart';
 
 /// A customizable InkWell widget that opens the MultiSelectDialog
 // ignore: must_be_immutable
-class MultiSelectDialogField<V> extends FormField<List<V>> {
+class MultiSelectDialogField<V> extends FormField<List<V?>> {
   /// An enum that determines which type of list to render.
   final MultiSelectListType? listType;
 
@@ -27,17 +27,17 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   final List<MultiSelectItem<V>> items;
 
   /// Fires when the an item is selected / unselected.
-  final void Function(List<V>)? onSelectionChanged;
+  final void Function(List<V?>)? onSelectionChanged;
 
   /// Overrides the default MultiSelectChipDisplay attached to this field.
   /// If you want to remove it, use MultiSelectChipDisplay.none().
   final MultiSelectChipDisplay<V>? chipDisplay;
 
   /// The list of selected values before interaction.
-  final List<V>? initialValue;
+  final List<V?>? initialValue;
 
   /// Fires when confirm is tapped.
-  final void Function(List<V>) onConfirm;
+  final void Function(List<V?>) onConfirm;
 
   /// Toggles search functionality.
   final bool searchable;
@@ -98,10 +98,10 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   final Color? checkColor;
 
   final AutovalidateMode autovalidateMode;
-  final FormFieldValidator<List<V>>? validator;
-  final FormFieldSetter<List<V>>? onSaved;
+  final FormFieldValidator<List<V?>>? validator;
+  final FormFieldSetter<List<V?>>? onSaved;
   final GlobalKey<FormFieldState>? key;
-  FormFieldState<List<V>>? state;
+  FormFieldState<List<V?>>? state;
 
   MultiSelectDialogField({
     required this.items,
@@ -143,7 +143,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
             validator: validator,
             autovalidateMode: autovalidateMode,
             initialValue: initialValue ?? [],
-            builder: (FormFieldState<List<V>> state) {
+            builder: (FormFieldState<List<V?>> state) {
               _MultiSelectDialogFieldView<V> field =
                   _MultiSelectDialogFieldView<V>(
                 title: title,
@@ -188,10 +188,10 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
   final Icon? buttonIcon;
   final Widget? title;
   final List<MultiSelectItem<V>> items;
-  final void Function(List<V>)? onSelectionChanged;
+  final void Function(List<V?>)? onSelectionChanged;
   final MultiSelectChipDisplay<V>? chipDisplay;
-  final List<V>? initialValue;
-  final void Function(List<V>)? onConfirm;
+  final List<V?>? initialValue;
+  final void Function(List<V?>)? onConfirm;
   final bool? searchable;
   final Text? confirmText;
   final Text? cancelText;
@@ -211,7 +211,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
   final TextStyle? searchHintStyle;
   final bool separateSelectedItems;
   final Color? checkColor;
-  FormFieldState<List<V>>? state;
+  FormFieldState<List<V?>>? state;
 
   _MultiSelectDialogFieldView({
     required this.items,
@@ -247,7 +247,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
 
   /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectDialogField.
   _MultiSelectDialogFieldView._withState(
-      _MultiSelectDialogFieldView<V> field, FormFieldState<List<V>> state)
+      _MultiSelectDialogFieldView<V> field, FormFieldState<List<V?>> state)
       : items = field.items,
         title = field.title,
         buttonText = field.buttonText,
@@ -286,7 +286,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
 
 class __MultiSelectDialogFieldViewState<V>
     extends State<_MultiSelectDialogFieldView<V>> {
-  List<V> _selectedItems = [];
+  List<V?> _selectedItems = [];
 
   @override
   void initState() {
@@ -312,10 +312,10 @@ class __MultiSelectDialogFieldViewState<V>
           items: chipDisplayItems,
           colorator: widget.chipDisplay!.colorator ?? widget.colorator,
           onTap: (item) {
-            List<V>? newValues;
+            List<V?>? newValues;
             if (widget.chipDisplay!.onTap != null) {
               dynamic result = widget.chipDisplay!.onTap!(item);
-              if (result is List<V>) newValues = result;
+              if (result is List<V?>) newValues = result;
             }
             if (newValues != null) {
               _selectedItems = newValues;

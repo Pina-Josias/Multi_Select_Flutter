@@ -3,8 +3,8 @@ import 'multi_select_item.dart';
 
 /// Contains common actions that are used by different multi select classes.
 class MultiSelectActions<T> {
-  List<T> onItemCheckedChange(
-      List<T> selectedValues, T itemValue, bool checked) {
+  List<T?> onItemCheckedChange(
+      List<T?> selectedValues, T itemValue, bool checked) {
     if (checked) {
       selectedValues.add(itemValue);
     } else {
@@ -14,14 +14,14 @@ class MultiSelectActions<T> {
   }
 
   /// Pops the dialog from the navigation stack and returns the initially selected values.
-  void onCancelTap(BuildContext ctx, List<T> initiallySelectedValues) {
+  void onCancelTap(BuildContext ctx, List<T?> initiallySelectedValues) {
     Navigator.pop(ctx, initiallySelectedValues);
   }
 
   /// Pops the dialog from the navigation stack and returns the selected values.
   /// Calls the onConfirm function if one was provided.
-  void onConfirmTap(
-      BuildContext ctx, List<T> selectedValues, Function(List<T>)? onConfirm) {
+  void onConfirmTap(BuildContext ctx, List<T?> selectedValues,
+      Function(List<T?>)? onConfirm) {
     Navigator.pop(ctx, selectedValues);
     if (onConfirm != null) {
       onConfirm(selectedValues);

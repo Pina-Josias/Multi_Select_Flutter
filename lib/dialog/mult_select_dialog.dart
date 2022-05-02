@@ -9,16 +9,16 @@ class MultiSelectDialog<T> extends StatefulWidget with MultiSelectActions<T> {
   final List<MultiSelectItem<T>> items;
 
   /// The list of selected values before interaction.
-  final List<T> initialValue;
+  final List<T?> initialValue;
 
   /// The text at the top of the dialog.
   final Widget? title;
 
   /// Fires when the an item is selected / unselected.
-  final void Function(List<T>)? onSelectionChanged;
+  final void Function(List<T?>)? onSelectionChanged;
 
   /// Fires when confirm is tapped.
-  final void Function(List<T>)? onConfirm;
+  final void Function(List<T?>)? onConfirm;
 
   /// Toggles search functionality. Default is false.
   final bool searchable;
@@ -110,7 +110,7 @@ class MultiSelectDialog<T> extends StatefulWidget with MultiSelectActions<T> {
 }
 
 class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
-  List<T> _selectedValues = [];
+  List<T?> _selectedValues = [];
   bool _showSearch = false;
   List<MultiSelectItem<T>> _items;
 
