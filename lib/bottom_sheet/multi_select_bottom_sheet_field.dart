@@ -30,7 +30,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
   final void Function(List<V>)? onSelectionChanged;
 
   /// Fires when confirm is tapped.
-  final void Function(List<V>) onConfirm;
+  final void Function(List<V>)? onConfirm;
 
   /// Toggles search functionality.
   final bool searchable;
@@ -117,7 +117,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
 
   MultiSelectBottomSheetField({
     required this.items,
-    required this.onConfirm,
+    this.onConfirm,
     this.title,
     this.buttonText,
     this.buttonIcon,
