@@ -264,7 +264,6 @@ class _MultiSelectBottomSheetFieldState<V>
               child: TextFormField(
                 key: widget.keyText,
                 maxLines: 1,
-                maxLength: 100,
                 controller: _searchText,
                 autovalidateMode: AutovalidateMode.always,
                 decoration: InputDecoration(
