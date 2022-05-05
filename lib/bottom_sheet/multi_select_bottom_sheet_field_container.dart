@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../util/multi_select_list_type.dart';
 import '../chip_display/multi_select_chip_display.dart';
 import '../util/multi_select_item.dart';
-import 'multi_select_bottom_sheet.dart';
+import '../bottom_sheet_field/multi_select_bottom_sheet.dart';
 
 /// A customizable InkWell widget that opens the MultiSelectBottomSheet
 // ignore: must_be_immutable
-class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
+class MultiSelectBottomSheetContainer<V> extends FormField<List<V>> {
   /// Style the Container that makes up the field.
   final BoxDecoration? decoration;
 
@@ -118,7 +118,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
   final GlobalKey<FormFieldState>? key;
   FormFieldState<List<V>>? state;
 
-  MultiSelectBottomSheetField({
+  MultiSelectBottomSheetContainer({
     required this.items,
     this.onConfirm,
     this.title,
@@ -164,8 +164,8 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
             autovalidateMode: autovalidateMode,
             initialValue: initialValue ?? [],
             builder: (FormFieldState<List<V>> state) {
-              _MultiSelectBottomSheetFieldView view =
-                  _MultiSelectBottomSheetFieldView<V>(
+              _MultiSelectBottomSheetContainerView view =
+                  _MultiSelectBottomSheetContainerView<V>(
                 items: items,
                 decoration: decoration,
                 unselectedColor: unselectedColor,
@@ -201,13 +201,13 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
                 shape: shape,
                 checkColor: checkColor,
               );
-              return _MultiSelectBottomSheetFieldView<V>._withState(
-                  view as _MultiSelectBottomSheetFieldView<V>, state);
+              return _MultiSelectBottomSheetContainerView<V>._withState(
+                  view as _MultiSelectBottomSheetContainerView<V>, state);
             });
 }
 
 // ignore: must_be_immutable
-class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
+class _MultiSelectBottomSheetContainerView<V> extends StatefulWidget {
   final BoxDecoration? decoration;
   final Text? buttonText;
   final Icon? buttonIcon;
@@ -244,7 +244,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final bool? showButtonsModal;
   FormFieldState<List<V>>? state;
 
-  _MultiSelectBottomSheetFieldView({
+  _MultiSelectBottomSheetContainerView({
     required this.items,
     this.title,
     this.buttonText,
@@ -281,9 +281,10 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
     this.checkColor,
   });
 
-  /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectBottomSheetField.
-  _MultiSelectBottomSheetFieldView._withState(
-      _MultiSelectBottomSheetFieldView<V> field, FormFieldState<List<V>> state)
+  /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectBottomSheetContainer.
+  _MultiSelectBottomSheetContainerView._withState(
+      _MultiSelectBottomSheetContainerView<V> field,
+      FormFieldState<List<V>> state)
       : items = field.items,
         title = field.title,
         buttonText = field.buttonText,
@@ -321,12 +322,12 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
         state = state;
 
   @override
-  __MultiSelectBottomSheetFieldViewState createState() =>
-      __MultiSelectBottomSheetFieldViewState<V>();
+  __MultiSelectBottomSheetContainerViewState createState() =>
+      __MultiSelectBottomSheetContainerViewState<V>();
 }
 
-class __MultiSelectBottomSheetFieldViewState<V>
-    extends State<_MultiSelectBottomSheetFieldView<V>> {
+class __MultiSelectBottomSheetContainerViewState<V>
+    extends State<_MultiSelectBottomSheetContainerView<V>> {
   List<V> _selectedItems = [];
 
   @override

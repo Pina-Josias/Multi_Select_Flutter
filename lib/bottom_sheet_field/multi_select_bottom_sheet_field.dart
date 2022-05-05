@@ -6,8 +6,8 @@ import '../util/multi_select_item.dart';
 import 'multi_select_bottom_sheet.dart';
 
 /// A customizable InkWell widget that opens the MultiSelectBottomSheet
-class MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
-  const MultiSelectBottomSheetFieldView({
+class MultiSelectBottomSheetField<V> extends StatefulWidget {
+  const MultiSelectBottomSheetField({
     Key? key,
     required this.items,
     this.keyText,
@@ -157,12 +157,12 @@ class MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final ThemeData? theme;
 
   @override
-  State<MultiSelectBottomSheetFieldView<V>> createState() =>
-      _MultiSelectBottomSheetFieldViewState<V>();
+  State<MultiSelectBottomSheetField<V>> createState() =>
+      _MultiSelectBottomSheetFieldState<V>();
 }
 
-class _MultiSelectBottomSheetFieldViewState<V>
-    extends State<MultiSelectBottomSheetFieldView<V>> {
+class _MultiSelectBottomSheetFieldState<V>
+    extends State<MultiSelectBottomSheetField<V>> {
   List<V> _selectedItems = [];
   TextEditingController _searchText = TextEditingController();
 
