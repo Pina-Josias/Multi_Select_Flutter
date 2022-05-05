@@ -7,7 +7,7 @@ import 'multi_select_bottom_sheet.dart';
 
 /// A customizable InkWell widget that opens the MultiSelectBottomSheet
 // ignore: must_be_immutable
-class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
+class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
   /// Style the Container that makes up the field.
   final BoxDecoration? decoration;
 
@@ -21,16 +21,16 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
   final List<MultiSelectItem<V>> items;
 
   /// The list of selected values before interaction.
-  final List<V?>? initialValue;
+  final List<V>? initialValue;
 
   /// The text at the top of the dialog.
   final Widget? title;
 
   /// Fires when the an item is selected / unselected.
-  final void Function(List<V?>)? onSelectionChanged;
+  final void Function(List<V>)? onSelectionChanged;
 
   /// Fires when confirm is tapped.
-  final void Function(List<V?>)? onConfirm;
+  final void Function(List<V>)? onConfirm;
 
   /// Toggles search functionality.
   final bool searchable;
@@ -113,10 +113,10 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
   final bool showButtonsModal;
 
   final AutovalidateMode autovalidateMode;
-  final FormFieldValidator<List<V?>>? validator;
-  final FormFieldSetter<List<V?>>? onSaved;
+  final FormFieldValidator<List<V>>? validator;
+  final FormFieldSetter<List<V>>? onSaved;
   final GlobalKey<FormFieldState>? key;
-  FormFieldState<List<V?>>? state;
+  FormFieldState<List<V>>? state;
 
   MultiSelectBottomSheetField({
     required this.items,
@@ -163,7 +163,7 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
             validator: validator,
             autovalidateMode: autovalidateMode,
             initialValue: initialValue ?? [],
-            builder: (FormFieldState<List<V?>> state) {
+            builder: (FormFieldState<List<V>> state) {
               _MultiSelectBottomSheetFieldView view =
                   _MultiSelectBottomSheetFieldView<V>(
                 items: items,
@@ -201,8 +201,8 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V?>> {
                 shape: shape,
                 checkColor: checkColor,
               );
-              return _MultiSelectBottomSheetFieldView<V?>._withState(
-                  view as _MultiSelectBottomSheetFieldView<V?>, state);
+              return _MultiSelectBottomSheetFieldView<V>._withState(
+                  view as _MultiSelectBottomSheetFieldView<V>, state);
             });
 }
 
@@ -212,10 +212,10 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final Text? buttonText;
   final Icon? buttonIcon;
   final List<MultiSelectItem<V>> items;
-  final List<V?>? initialValue;
+  final List<V>? initialValue;
   final Widget? title;
-  final void Function(List<V?>)? onSelectionChanged;
-  final void Function(List<V?>)? onConfirm;
+  final void Function(List<V>)? onSelectionChanged;
+  final void Function(List<V>)? onConfirm;
   final bool searchable;
   final Text? confirmText;
   final Text? cancelText;
@@ -242,7 +242,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
   final Color? checkColor;
   final bool? showBottomSelection;
   final bool? showButtonsModal;
-  FormFieldState<List<V?>>? state;
+  FormFieldState<List<V>>? state;
 
   _MultiSelectBottomSheetFieldView({
     required this.items,
@@ -283,7 +283,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
 
   /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectBottomSheetField.
   _MultiSelectBottomSheetFieldView._withState(
-      _MultiSelectBottomSheetFieldView<V> field, FormFieldState<List<V?>> state)
+      _MultiSelectBottomSheetFieldView<V> field, FormFieldState<List<V>> state)
       : items = field.items,
         title = field.title,
         buttonText = field.buttonText,
@@ -327,7 +327,7 @@ class _MultiSelectBottomSheetFieldView<V> extends StatefulWidget {
 
 class __MultiSelectBottomSheetFieldViewState<V>
     extends State<_MultiSelectBottomSheetFieldView<V>> {
-  List<V?> _selectedItems = [];
+  List<V> _selectedItems = [];
 
   @override
   void initState() {
@@ -353,10 +353,10 @@ class __MultiSelectBottomSheetFieldViewState<V>
           items: chipDisplayItems,
           colorator: widget.chipDisplay!.colorator ?? widget.colorator,
           onTap: (item) {
-            List<V?>? newValues;
+            List<V>? newValues;
             if (widget.chipDisplay!.onTap != null) {
               dynamic result = widget.chipDisplay!.onTap!(item);
-              if (result is List<V?>) newValues = result;
+              if (result is List<V>) newValues = result;
             }
             if (newValues != null) {
               _selectedItems = newValues;
@@ -454,6 +454,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
   @override
   Widget build(BuildContext context) {
     List<MultiSelectItem<V>?> chipDisplayItems = [];
+
     chipDisplayItems = _selectedItems
         .map((e) =>
             widget.items.firstWhereOrNull((element) => e == element.value))
