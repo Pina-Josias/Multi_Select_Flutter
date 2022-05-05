@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // This MultiSelectBottomSheetField has no decoration, but is instead wrapped in a Container that has
               // decoration applied. This allows the ChipDisplay to render inside the same Container.
               //################################################################################################
-              Container(
+              /*Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withOpacity(.4),
                   border: Border.all(
@@ -170,17 +170,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              */
               SizedBox(height: 40),
               //################################################################################################
               // MultiSelectBottomSheetField with validators
               //################################################################################################
-              MultiSelectBottomSheetField<Animal>(
+              MultiSelectBottomSheetFieldView<Animal>(
                 key: _multiSelectKey,
                 initialChildSize: 0.7,
                 maxChildSize: 0.95,
-                autovalidateMode: AutovalidateMode.always,
+                //autovalidateMode: AutovalidateMode.always,
                 title: Text("Animals"),
-                buttonText: Text("Multiples items"),
+                buttonText: Text("Select Countries"),
+                hintText: 'Multiple Countries',
                 showBottomSelection: false,
                 buttonIcon: Icon(Icons.arrow_drop_down),
                 items: _items,
@@ -191,10 +193,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (values == null || values.isEmpty) {
                     return "Required";
                   }
-                  List<String> names = values.map((e) => e.name).toList();
-                  if (names.contains("Frog")) {
-                    return "Frogs are weird!";
-                  }
                   return null;
                 },
                 onConfirm: (values) {},
@@ -202,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     _selectedAnimals3 = values;
                   });
-                  _multiSelectKey.currentState.validate();
+                  //_multiSelectKey.currentState.validate();
                 },
               ),
               SizedBox(height: 40),
